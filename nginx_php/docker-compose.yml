@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+
+  web:
+    image: nginx:latest
+    environment:
+      - WP_USE_EXT_MYSQL=true
+    ports:
+      - 80:80
+    volumes:
+      - ./www:/var/www/myapp
+      - ./conf/site.conf:/etc/nginx/conf.d/site.conf
+    depends_on:
+      - php
+
+  # php:
+  #   image: php:7.2-fpm
+  #   volumes:
+  #     - ./www:/var/www/myapp
+  #     - ./php:/usr/local/etc/php/php.ini
+
+  php:
+    build:
+      context: ./php
+    ports:
+      - 9000:9000
+    volumes:
+      - ./www:/var/www/myapp
+      # - ./php:/usr/local/etc/php-fpm.d/www.conf

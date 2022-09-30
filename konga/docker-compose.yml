@@ -1,0 +1,25 @@
+version: '3.8'
+
+networks:
+  kong_network:
+    driver: bridge
+    external: true
+
+services:
+  konga:
+    image: pantsel/konga:0.14.9
+    container_name: konga
+    restart: 'on-failure:5'
+    environment:
+      DB_ADAPTER: postgres
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_DATABASE: kong
+      DB_PG_SCHEMA: public
+      NODE_ENV: development
+    networks:
+      - 'kong_network'
+    ports:
+      - '1337:1337'

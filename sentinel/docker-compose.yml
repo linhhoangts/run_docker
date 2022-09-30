@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+  redis_sentinel:
+    build: .
+    image: redis_sentinel
+    container_name: redis_sentinel
+    ports:
+      - 6379-6381:6379-6381
+      - 26379-26381:26379-26381
+    environment:
+      - WORK_DIR=/tmp/redis
+      - LOCAL_HOST=0.0.0.0
+      - REDIS_PASSWORD=password
+      - MASTER_NAME=master
+      - MASTER_PORT=6379
+      - SLAVES_PORT=6380|6381
+      - SENTINELS_PORT=26379|26380|26381
+      - SENTINEL_QUORUM=2
+      - SENTINEL_DOWN_AFTER_MILLISECONDS=30000
+      - SENTINEL_FAILOVER_TIMEOUT_MILLISECONDS=180000
+      - SENTINEL_NUMBER_PARALEL_SYNCS_SLAVES=1
+    volumes:
+      - /tmp/redis:/tmp/redis
